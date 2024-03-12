@@ -6,17 +6,10 @@
         .tree {
             margin-left: 20px;
         }
-        #root-icon {
-            width: 20px;
-            height: 20px;
-        }
     </style>
 </head>
 <body>
-    <div id="tree-container">
-        <img id="root-icon" src="folder_icon.png" alt="Folder Icon">
-         <!-- เปลี่ยนภาพให้เป็นโลโก้ของ root folder -->
-    </div>
+    <div id="tree-container"></div>
 
     <script>
         function displayTree(node, container) {
@@ -36,40 +29,7 @@
 
             container.appendChild(ulElement);
         }
-        // สร้างโครงสร้างข้อมูล root เริ่มต้น
-        const root = {
-            name: "Root",
-            children: [
-                {
-                    name: "Folder 1",
-                    children: [
-                        { name: "Subfolder 1.1", children: [] },
-                        { name: "Subfolder 1.2", children: [] }
-                    ]
-                },
-                {
-                    name: "Folder 2",
-                    children: [
-                        { name: "Subfolder 2.1", children: [] },
-                        { name: "Subfolder 2.2", children: [] }
-                    ]
-                },
-                {
-                    name: "Folder 3",
-                    children: [
-                        { name: "Subfolder 3.1", children: [] },
-                        { name: "Subfolder 3.2", children: [] }
-                    ]
-                },
-                {
-                    name: "Folder 4",
-                    children: [
-                        { name: "Subfolder 4.1", children: [] },
-                        { name: "Subfolder 4.2", children: [] }
-                    ]
-                }
-            ]
-        };
+
         const treeContainer = document.getElementById('tree-container');
         displayTree(root, treeContainer);
     </script>

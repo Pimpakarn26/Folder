@@ -7,9 +7,7 @@ class TreeNode {
     addChild(child) {
         this.children.push(child);
     }
-    
 }
-
 
 const root = new TreeNode("Root Folder");
 const folderA = new TreeNode("Folder A");
@@ -19,4 +17,3 @@ const folderC = new TreeNode("Folder C");
 root.addChild(folderA);
 root.addChild(folderB);
 folderA.addChild(folderC);
-

@@ -20,68 +20,101 @@ const folderStructure = {
     ]
 };
 
-// Function to add a folder
+// เพิ่มฟังก์ชัน addFolder เพื่อเพิ่มโฟลเดอร์ใหม่
 function addFolder() {
-  // Prompt for folder name
-  var folderName = prompt("Enter folder name:");
-  if (folderName !== null && folderName !== "") {
-    // Create folder object
-    var newFolder = {
-      name: folderName,
-      type: "folder",
-      children: [],
-    };
-
-    // Check if root already exists
-    if (!folderStructure.children) {
-      folderStructure.children = [];
-    }
-
-    // Add new folder to the root
-    folderStructure.children.push(newFolder);
-    
-    // Refresh the folder tree
-    refreshFolderTree();
-
-    addFile(folderStructure.children.length - 1); // Index of the new folder
+  var folderName = document.getElementById("folderName").value.trim();
+  if (folderName === "") {
+      alert("Please enter a folder name.");
+      return;
   }
+
+  // สร้าง element div สำหรับโฟลเดอร์ใหม่
+  var newFolder = document.createElement("div");
+  newFolder.textContent = folderName;
+  newFolder.classList.add("folder");
+
+  // เพิ่มโฟลเดอร์ใหม่ลงใน div id "folderTree"
+  document.getElementById("folderTree").appendChild(newFolder);
+
+  // เคลียร์ค่าใน input field
+  document.getElementById("folderName").value = "";
 }
 
+// เพิ่มฟังก์ชัน addFile เพื่อเพิ่มไฟล์ในโฟลเดอร์ที่เลือก
+function addFile() {
+  var fileName = document.getElementById("fileName").value.trim();
+  if (fileName === "") {
+      alert("Please enter a file name.");
+      return;
+  }
 
-// Function to remove a folder
+  var selectedFolder = document.querySelector(".folder.selected");
+  if (!selectedFolder) {
+      alert("Please select a folder.");
+      return;
+  }
+
+  // สร้าง element div สำหรับไฟล์ใหม่
+  var newFile = document.createElement("div");
+  newFile.textContent = fileName;
+  newFile.classList.add("file");
+
+  // เพิ่มไฟล์ใหม่ลงในโฟลเดอร์ที่เลือก
+  selectedFolder.appendChild(newFile);
+
+  // เคลียร์ค่าใน input field
+  document.getElementById("fileName").value = "";
+}
+
+// เพิ่มฟังก์ชัน removeFolder เพื่อลบโฟลเดอร์ที่เลือก
 function removeFolder() {
-  const folderTree = document.getElementById("folderTree");
-  const folders = folderTree.getElementsByClassName("folder");
-  if (folders.length > 0) {
-    const lastFolder = folders[folders.length - 1];
-    lastFolder.parentNode.removeChild(lastFolder); // ลบโฟลเดอร์ออกจาก HTML
-
-    // ลบโฟลเดอร์ออกจาก folderStructure
-    removeFolderFromStructure(folderStructure, lastFolder.textContent.trim());
+  var selectedFolder = document.querySelector(".folder.selected");
+  if (!selectedFolder) {
+      alert("Please select a folder.");
+      return;
   }
+
+  // ลบโฟลเดอร์ที่เลือก
+  selectedFolder.parentNode.removeChild(selectedFolder);
 }
 
-
-// Function to add a file to a folder
-function addFile(folderIndex) {
-  var folderName = prompt("Enter file name:");
-  if (folderName !== null && folderName !== "") {
-    // Create file object
-    var newFile = {
-      name: folderName,
-      type: "file"
-    };
-
-    // Check if folderIndex is valid
-    if (folderIndex >= 0 && folderIndex < folderStructure.children.length) {
-      // Add new file to the specified folder
-      folderStructure.children[folderIndex].children.push(newFile);
-
-      // Refresh the folder tree
-      refreshFolderTree();
-    }
+// เพิ่มฟังก์ชัน removeFile เพื่อลบไฟล์ที่เลือก
+function removeFile() {
+  var selectedFile = document.querySelector(".file.selected");
+  if (!selectedFile) {
+      alert("Please select a file.");
+      return;
   }
+
+  // ลบไฟล์ที่เลือก
+  selectedFile.parentNode.removeChild(selectedFile);
 }
+
+// เพิ่มการตรวจสอบสำหรับการคลิกที่ div ของโฟลเดอร์และไฟล์
+document.addEventListener("click", function(event) {
+  // ถ้าคลิกที่ div ของโฟลเดอร์
+  if (event.target.classList.contains("folder")) {
+      // ลบ class "selected" ที่ div โฟลเดอร์ที่เคยถูกเลือกไว้ก่อนหน้านี้
+      var selectedFolder = document.querySelector(".folder.selected");
+      if (selectedFolder) {
+          selectedFolder.classList.remove("selected");
+      }
+      // เพิ่ม class "selected" ให้กับ div โฟลเดอร์ที่ถูกคลิก
+      event.target.classList.add("selected");
+  }
+  // ถ้าคลิกที่ div ของไฟล์
+  else if (event.target.classList.contains("file")) {
+      // ลบ class "selected" ที่ div ไฟล์ที่เคยถูกเลือกไว้ก่อนหน้านี้
+      var selectedFile = document.querySelector(".file.selected");
+      if (selectedFile) {
+          selectedFile.classList.remove("selected");
+      }
+      // เพิ่ม class "selected" ให้กับ div ไฟล์ที่ถูกคลิก
+      event.target.classList.add("selected");
+  }
+});
+
+
 
 function createTreeElement(item) {
   const element = document.createElement("div");
